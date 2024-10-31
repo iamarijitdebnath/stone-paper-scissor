@@ -1,0 +1,83 @@
+body {
+    background-color: black;
+    color: aliceblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  
+  .content {
+    padding-top: 30px;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    gap: 20px;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .left-content, .right-content {
+    display: grid;
+    place-items: center;
+  }
+  
+  .videoScreen {
+    width: 640px;
+    height: 460px;
+  }
+  
+  .scoredetails {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 15px;
+    justify-items: center;
+  }
+  
+  .total-rounds, .score-section {
+    width: 60%;
+    border: 2px solid #333;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .score-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Adjust for two items */
+    justify-content: space-around;
+  }
+  
+  .score-box {
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Similar to flex-wrap */
+    gap: 20px;
+  }
+  
+  .prev-res {
+    background-color: aqua;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .gesture-display {
+    display: grid;
+    grid-auto-rows: auto;
+    justify-items: center;
+    gap: 5px;
+  }
+  
