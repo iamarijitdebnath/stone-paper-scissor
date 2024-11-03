@@ -10,11 +10,13 @@ function Webcam() {
     const [computerScore, setComputerScore] = React.useState(0);
     const [userScore, setUserScore] = React.useState(0);
 
+    const [whoWon, setWhoWon] = React.useState(null);
+
     const [logs, setLogs] = React.useState([]);
 
     React.useEffect(() => {
-        if(gestureText != null) {
-            switch(gestureText){
+        if (gestureText != null) {
+            switch (gestureText) {
                 case "Open Palm":
                     whoWins("PAPER");
                     break;
@@ -33,12 +35,17 @@ function Webcam() {
     const reset = () => {
         setComputerScore(0);
         setUserScore(0);
+
+        setIsGameStarted(false)
+        setIsGamePaused(false)
+
+        setLogs([]);
     }
 
     const start = () => {
         setIsGameStarted(true)
         setIsGamePaused(false)
-    } 
+    }
 
     const stop = () => {
         setIsGamePaused(true)
@@ -46,8 +53,11 @@ function Webcam() {
 
 
     React.useEffect(() => {
-        if(userScore == 5 || computerScore == 5) {
-            alert("Reset");
+        if (userScore == 5 || computerScore == 5) {
+            setWhoWon(userScore > computerScore ? 'You' : 'Computer')
+            setIsGameStarted(false)
+            setIsGamePaused(false)
+            document.getElementById('my_modal_5').showModal()
         }
     }, [userScore, computerScore]);
 
@@ -55,90 +65,111 @@ function Webcam() {
         var options = ["STONE", "PAPER", "SCISSOR"];
         var computerChoice = options[Math.floor((Math.random() * options.length))]
 
-        if(userChoice == computerChoice){
+        if (userChoice == computerChoice) {
 
-        } else if(userChoice == "STONE") {
-            if(computerChoice == "PAPER") {
+        } else if (userChoice == "STONE") {
+            if (computerChoice == "PAPER") {
                 setComputerScore((score) => score + 1)
-            } else if(computerChoice == "SCISSOR") {
+            } else if (computerChoice == "SCISSOR") {
                 setUserScore((score) => score + 1);
             }
-        } else if(userChoice == "PAPER") {
-            if(computerChoice == "SCISSOR") {
+        } else if (userChoice == "PAPER") {
+            if (computerChoice == "SCISSOR") {
                 setComputerScore((score) => score + 1)
-            } else if(computerChoice == "STONE") {
+            } else if (computerChoice == "STONE") {
                 setUserScore((score) => score + 1);
             }
-        } else if(userChoice == "SCISSOR") {
-            if(computerChoice == "STONE") {
+        } else if (userChoice == "SCISSOR") {
+            if (computerChoice == "STONE") {
                 setComputerScore((score) => score + 1)
-            } else if(computerChoice == "PAPER") {
+            } else if (computerChoice == "PAPER") {
                 setUserScore((score) => score + 1);
             }
-        } 
-        setLogs((oldLogs) => [...oldLogs, `User choosed ${userChoice} & Computer choosed ${computerChoice}`])
+        }
+        setLogs((oldLogs) => [...oldLogs, `You choosed ${userChoice} & Computer choosed ${computerChoice}`])
     }
 
     return (
-        <div className="h-screen grid grid-cols-12 gap-8 p-8 bg-gray-800">
+        <div>
+            <div className="h-screen grid grid-cols-12 gap-8 pt-8 pb-4 px-8 bg-gray-800">
 
-            <div className="col-span-8 border border-2 border-gray-400 overflow-hidden rounded-lg">
-                <div className="h-full flex justify-center items-center bg-black">
-                    {
-                        (isGameStarted == true && isGamePaused == false) ? (
-                            <Camera onGestureChange={setGestureText} />
-                        ) : (isGamePaused == true) ? (
-                            <span className="text-2xl text-gray-50">The Game Is Paused</span>
-                        ) : (
-                            <span className="text-2xl text-gray-50">Click start to start the game</span>
-                        )
-                    }
-                </div>
-            </div>
-
-            <div className="flex flex-col col-span-4 border border-2 border-gray-400 overflow-hidden rounded-lg">
-                <div className="flex py-4">
-                    <div className="flex-1 flex flex-col items-center justify-center">
-                        <h3 className="text-gray-50 text-4xl">{userScore}</h3>
-                        <h5 className="text-gray-50">User</h5>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-center">
-                        <h3 className="text-gray-50 text-4xl">{computerScore}</h3>
-                        <h5 className="text-gray-50">Computer</h5>
-                    </div>
-                </div>
-
-                {
-                    (isGameStarted == false || isGamePaused == true)  ? (
-                        <div 
-                            onClick={start}
-                            className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
-                            Start
-                        </div>
-                    ) : (
-                        <div onClick={stop} className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
-                            Stop
-                        </div>
-                    )
-                }
-                
-
-                <div onClick={reset} className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
-                    Restart
-                </div>
-
-                <div className="flex-1">
-                    <div className="h-full p-4 bg-gray-900">
+                <div className="col-span-12 md:col-span-8 border border-2 border-gray-400 overflow-hidden rounded-lg">
+                    <div className="h-full flex justify-center items-center bg-black">
                         {
-                            logs.map((log, index) => (
-                                <div key={index} className="text-gray-400 text-sm mb-2">
-                                    { log }
-                                </div>
-                            ))
+                            (isGameStarted == true && isGamePaused == false) ? (
+                                <Camera onGestureChange={setGestureText} />
+                            ) : (isGamePaused == true) ? (
+                                <span className="text-2xl text-gray-50">The Game Is Paused</span>
+                            ) : (
+                                <span className="text-2xl text-gray-50">Click start to start the game</span>
+                            )
                         }
                     </div>
                 </div>
+
+                <div className="flex flex-col col-span-12 md:col-span-4 border border-2 border-gray-400 overflow-hidden rounded-lg">
+                    <div className="flex py-4">
+                        <div className="flex-1 flex flex-col items-center justify-center">
+                            <h3 className="text-gray-50 text-4xl">{userScore}</h3>
+                            <h5 className="text-gray-50">You</h5>
+                        </div>
+                        <div className="flex-1 flex flex-col items-center justify-center">
+                            <h3 className="text-gray-50 text-4xl">{computerScore}</h3>
+                            <h5 className="text-gray-50">Computer</h5>
+                        </div>
+                    </div>
+
+                    {
+                        (isGameStarted == false || isGamePaused == true) ? (
+                            <div
+                                onClick={start}
+                                className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
+                                Start
+                            </div>
+                        ) : (
+                            <div onClick={stop} className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
+                                Stop
+                            </div>
+                        )
+                    }
+
+
+                    <div onClick={reset} className="h-[50px] flex justify-center items-center text-medium text-gray-50 bg-gray-700 cursor-pointer hover:bg-gray-500">
+                        Restart
+                    </div>
+
+                    <div className="flex-1">
+                        <div className="h-full p-4 bg-gray-900 overflow-y-scroll">
+                            {
+                                logs.map((log, index) => (
+                                    <div key={index} className="text-gray-400 text-sm mb-2">
+                                        {log}
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <dialog id="my_modal_5" className="min-w-[600px] bg-white p-8 rounded-lg">
+                <div className="modal-box">
+                    <h3 className="font-bold text-3xl">
+                        {whoWon == "Computer" ? '😔Computer won better luck next time!!' : '🥳Congratulations You Won!!'}
+                    </h3>
+                    <p className="mt-4 mb-8">Do you want to challange the Computer again?</p>
+                    <div className="modal-action">
+                        <form method="dialog" className='space-x-4'>
+                            <button className="btn py-3 px-4 border-1 rounded border-gray-200" onClick={reset}>Close</button>
+                            <button className="btn py-3 px-4 border-1 rounded border-gray-200 bg-blue-400" onClick={() => {
+                                start();
+                                reset();
+                            }}>Start Game</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+
         </div>
     )
 }
