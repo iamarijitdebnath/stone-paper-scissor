@@ -113,7 +113,7 @@ const Camera = ({ onGestureChange }) => {
                 ctx.fillText(`Hand: ${handedness.categoryName}`, 10, 20);
                 ctx.fillText(`Gesture: ${gestureText}`, 10, 40);
                 ctx.fillText(`Fingers up: ${fingerCount}`, 10, 60);
-                ctx.fillText(`TimeReamaining: ${timeRemaining}`, 10, 80)
+                // ctx.fillText(`TimeReamaining: ${timeRemaining}`, 10, 80)
                 if (['closed_fist', 'open_palm', 'victory'].includes(gesture.categoryName.toLowerCase())) {
 
                     stopDetection();
